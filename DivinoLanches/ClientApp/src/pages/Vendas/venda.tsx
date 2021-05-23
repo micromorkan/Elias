@@ -5,7 +5,7 @@ import { RetornoModel } from '../../models/RetornoModel'
 import { ProdutoService } from '../../services/Produto/produtoService'
 import { VendaService } from '../../services/Venda/vendaService'
 import { withStyles } from '@material-ui/core/styles';
-import { green, blue, yellow } from '@material-ui/core/colors';
+import { green } from '@material-ui/core/colors';
 import { Box, Button, Fade, Grid, Modal } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import ToggleButton from '@material-ui/lab/ToggleButton';
@@ -44,32 +44,6 @@ const ButtonGreen = withStyles((theme) => ({
         backgroundColor: green[500],
         '&:hover': {
             backgroundColor: green[700],
-        },
-    },
-}))(Button);
-
-const ButtonYellow = withStyles((theme) => ({
-    root: {
-        height: '100px',
-        width: '100%',
-        borderRadius: 10,    
-        color: theme.palette.getContrastText(yellow[500]),
-        backgroundColor: yellow[500],
-        '&:hover': {
-            backgroundColor: yellow[700],
-        },
-    },
-}))(Button);
-
-const ButtonBlue = withStyles((theme) => ({
-    root: {
-        height: '100px',
-        width: '100%',
-        borderRadius: 10,    
-        color: theme.palette.getContrastText(blue[500]),
-        backgroundColor: blue[500],
-        '&:hover': {
-            backgroundColor: blue[700],
         },
     },
 }))(Button);

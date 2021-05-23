@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { green, blue, yellow } from '@material-ui/core/colors';
+import { yellow } from '@material-ui/core/colors';
 import { Box, Button } from '@material-ui/core';
 import { TipoProdutoService } from '../../services/TipoProduto/tipoProdutoService'
 import { RetornoModel } from '../../models/RetornoModel'
@@ -26,32 +26,6 @@ export interface StateTipoVenda {
     },
   }))(Button);
 
-  const ButtonBlue = withStyles((theme) => ({
-    root: {
-        height: '100px',
-        width: '80%',
-        borderRadius: 10,    
-        color: theme.palette.getContrastText(blue[500]),
-        backgroundColor: blue[500],
-        '&:hover': {
-            backgroundColor: blue[700],
-        },
-    },
-  }))(Button);
-
-  const ButtonGreen = withStyles((theme) => ({
-    root: {
-        height: '100px',
-        width: '80%',
-        borderRadius: 10,    
-        color: theme.palette.getContrastText(green[500]),
-        backgroundColor: green[500],
-        '&:hover': {
-            backgroundColor: green[700],
-        },
-    },
-  }))(Button);
-
 class TipoVenda extends Component<PropsTipoVenda, StateTipoVenda> {
     constructor(props: PropsTipoVenda) {
         super(props);
@@ -73,7 +47,6 @@ class TipoVenda extends Component<PropsTipoVenda, StateTipoVenda> {
     render() {
         const { history } = this.props;
         let rows = this.state.listaTodos;        
-        let first = true;
         return (
             <Box textAlign='center'>
                 <h1 style={{ fontSize: '50px' }}>Vendas</h1>

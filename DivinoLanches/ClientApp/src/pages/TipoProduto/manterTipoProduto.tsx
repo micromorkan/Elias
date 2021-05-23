@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core/styles';
-import { Box, Button, createStyles, Grid, TableCell, TableRow, TextField, Theme } from '@material-ui/core';
+import { Box, Button, Grid, TextField } from '@material-ui/core';
 import { TipoProdutoService } from '../../services/TipoProduto/tipoProdutoService'
 import { TipoProdutoModel } from '../../models/TipoProdutoModel'
 import { RetornoModel } from '../../models/RetornoModel'
