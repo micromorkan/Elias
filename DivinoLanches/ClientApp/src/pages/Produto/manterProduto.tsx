@@ -85,6 +85,16 @@ class Produto extends Component<PropsProduto, StateProduto> {
     }
 
     handleSubmit = () => {
+        if (this.state.nome.trim() === '') {
+            alert('Informe o Nome do Produto');
+        } else if (this.state.tipo.trim() === '') {
+            alert('Informe o Tipo do Produto')
+        } else if (this.state.subtipo.trim() === '') {
+            alert('Informe o SubTipo do Produto')
+        } else if (this.state.valor.trim() === '' || parseFloat(this.state.valor) === 0) {
+            alert('Informe o Valor do Produto')
+        } else {
+
         let object = {
             id: this.state.id,
             nome: this.state.nome,
@@ -111,6 +121,7 @@ class Produto extends Component<PropsProduto, StateProduto> {
             }).catch((result: RetornoModel) => {
                 alert(result.mensagem)
             });
+            }
         }
     }
 

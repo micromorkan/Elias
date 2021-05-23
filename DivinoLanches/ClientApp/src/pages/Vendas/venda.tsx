@@ -128,26 +128,33 @@ const StyledToggleButton = withStyles({
         this.setState({quantidade: Number(value)});
     };
 
-    incluirVenda = () => {        
-        let venda = { 
-            id: 0,
-            nomeProduto: this.state.nomeProduto,
-            tipoProduto: this.state.tipoProduto,
-            subTipoProduto: this.state.subTipoProduto,
-            quantidade: parseInt(this.state.quantidade.toString()),            
-            dataVenda: new Date().toLocaleDateString(),
-            valorTotal: parseFloat(this.state.valorUnitario.toString().replace(',', '.')) * this.state.quantidade,
-            formaPagamento: this.state.formaPagamento 
-        }
+    incluirVenda = () => {  
+        if (this.state.quantidade === 0 || this.state.quantidade === null) {
+            alert('Informe a Quantidade');
+        } else if (this.state.formaPagamento?.trim() === '' || this.state.formaPagamento === null) {
+            alert('Informe a Forma de Pagamento')
+        } else {
 
-        let model = new VendaModel(venda);
-        
-        VendaService.incluir(model).then(() => {
-            alert("Venda Incluida com sucesso!")
-            this.closeModal();
-        }).catch(error => {
-            alert('Ocorreu um erro ao salvar: ' + error);
-        });
+            let venda = {
+                id: 0,
+                nomeProduto: this.state.nomeProduto,
+                tipoProduto: this.state.tipoProduto,
+                subTipoProduto: this.state.subTipoProduto,
+                quantidade: parseInt(this.state.quantidade.toString()),
+                dataVenda: new Date().toLocaleDateString(),
+                valorTotal: parseFloat(this.state.valorUnitario.toString().replace(',', '.')) * this.state.quantidade,
+                formaPagamento: this.state.formaPagamento
+            }
+
+            let model = new VendaModel(venda);
+
+            VendaService.incluir(model).then(() => {
+                alert("Venda Incluida com sucesso!")
+                this.closeModal();
+            }).catch(error => {
+                alert('Ocorreu um erro ao salvar: ' + error);
+            });
+        }
     };
 
     render() {

@@ -62,30 +62,37 @@ class SubTipoProduto extends Component<PropsSubTipoProduto, StateSubTipoProduto>
     }
 
     handleSubmit = () => {
-        let object = {
-            id: this.state.id,
-            nome: this.state.nome,
-            tipoProduto: this.state.tipo,
-            ativo: this.state.ativo
-        }
+        if (this.state.nome.trim() === '') {
+            alert('Informe o Nome do Sub Tipo Produto');
+        } else if (this.state.tipo.trim() === '') {
+            alert('Informe o Tipo do Produto')        
+        } else {
 
-        let model = new SubTipoProdutoModel(object);
-        
-        if (!!this.props.match.params.id) {
-            SubTipoProdutoService.alterar(model).then((result: RetornoModel) => {
-                alert(result.mensagem)
-            }).catch((result: RetornoModel) => {
-                alert(result.mensagem)
-            });
-        } else {        
-            SubTipoProdutoService.incluir(model).then((result: RetornoModel) => {
-                if (!result.error) {
-                    this.limparCampos();
-                }
-                alert(result.mensagem)
-            }).catch((result: RetornoModel) => {
-                alert(result.mensagem)
-            });
+            let object = {
+                id: this.state.id,
+                nome: this.state.nome,
+                tipoProduto: this.state.tipo,
+                ativo: this.state.ativo
+            }
+
+            let model = new SubTipoProdutoModel(object);
+
+            if (!!this.props.match.params.id) {
+                SubTipoProdutoService.alterar(model).then((result: RetornoModel) => {
+                    alert(result.mensagem)
+                }).catch((result: RetornoModel) => {
+                    alert(result.mensagem)
+                });
+            } else {
+                SubTipoProdutoService.incluir(model).then((result: RetornoModel) => {
+                    if (!result.error) {
+                        this.limparCampos();
+                    }
+                    alert(result.mensagem)
+                }).catch((result: RetornoModel) => {
+                    alert(result.mensagem)
+                });
+            }
         }
     }
 

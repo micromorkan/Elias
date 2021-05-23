@@ -47,30 +47,35 @@ class TipoProduto extends Component<PropsTipoProduto, StateTipoProduto> {
     }
 
     handleSubmit = () => {
-        let object = {
-            id: this.state.id,
-            nome: this.state.nome,
-            ativo: this.state.ativo
-        }
+        if (this.state.nome.trim() === '') {
+            alert('Informe o Nome do Tipo do Produto');
+        } else {
 
-        let model = new TipoProdutoModel(object);
-        
-        if (!!this.props.match.params.id) {
-            TipoProdutoService.alterar(model).then((result: RetornoModel) => {
-                alert(result.mensagem)
-                
-            }).catch((result: RetornoModel) => {
-                alert(result.mensagem)
-            });
-        } else {        
-            TipoProdutoService.incluir(model).then((result: RetornoModel) => {
-                if (!result.error) {
-                    this.limparCampos();
-                }
-                alert(result.mensagem)
-            }).catch((result: RetornoModel) => {
-                alert(result.mensagem)
-            });
+            let object = {
+                id: this.state.id,
+                nome: this.state.nome,
+                ativo: this.state.ativo
+            }
+
+            let model = new TipoProdutoModel(object);
+
+            if (!!this.props.match.params.id) {
+                TipoProdutoService.alterar(model).then((result: RetornoModel) => {
+                    alert(result.mensagem)
+
+                }).catch((result: RetornoModel) => {
+                    alert(result.mensagem)
+                });
+            } else {
+                TipoProdutoService.incluir(model).then((result: RetornoModel) => {
+                    if (!result.error) {
+                        this.limparCampos();
+                    }
+                    alert(result.mensagem)
+                }).catch((result: RetornoModel) => {
+                    alert(result.mensagem)
+                });
+            }
         }
     }
 
