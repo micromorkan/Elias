@@ -23,7 +23,6 @@ namespace DivinoLanches
         {
 
             services.AddControllersWithViews();
-            services.AddTransient<MySqlConnection>(_ => new MySqlConnection(Configuration["ConnectionStrings:Default"]));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
