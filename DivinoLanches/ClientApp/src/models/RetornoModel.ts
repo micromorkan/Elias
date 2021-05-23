@@ -1,4 +1,4 @@
-﻿export class RetornoModel {
+export class RetornoModel {
 
     error: number;
     mensagem: string;
