@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import { Box, Button, createStyles, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Tooltip } from '@material-ui/core';
 import { SubTipoProdutoService } from '../../services/SubTipoProduto/subTipoProdutoService';

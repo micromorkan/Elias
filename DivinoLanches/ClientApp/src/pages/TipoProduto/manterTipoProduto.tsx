@@ -17,28 +17,6 @@ export interface StateTipoProduto {
     ativo: boolean;
 }
 
-const StyledTableCell = withStyles((theme: Theme) =>
-  createStyles({
-    head: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    body: {
-      fontSize: 14,
-    },
-  }),
-)(TableCell);
-
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-      },
-    },
-  }),
-)(TableRow);
-
 class TipoProduto extends Component<PropsTipoProduto, StateTipoProduto> {
     constructor(props: PropsTipoProduto) {    
         super(props);    

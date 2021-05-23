@@ -72,34 +72,19 @@ class TipoVenda extends Component<PropsTipoVenda, StateTipoVenda> {
 
     render() {
         const { history } = this.props;
-        let rows = this.state.listaTodos;
-        let random: number = 0;
+        let rows = this.state.listaTodos;        
         let first = true;
         return (
             <Box textAlign='center'>
                 <h1 style={{ fontSize: '50px' }}>Vendas</h1>
                 <Button onClick={history.goBack} style={{ marginTop: '10px' }} variant="outlined" color='default'>Voltar</Button>
                 <br />
-                {rows.map((row) => {
-                    if (random === 0) {
-                        first = false;
-                        random++;
-                        return (<ButtonGreen onClick={() => history.push({ pathname: "/TipoVenda/Venda", state: { tipoVenda: row.nome } })} size="large" variant="contained" color="primary" style={{ marginTop: first ? '60px' : '30px' }}>
+                {rows.map((row) => (
+                        <ButtonYellow onClick={() => history.push({ pathname: "/TipoVenda/Venda", state: { tipoVenda: row.nome } })} size="large" variant="contained" color="primary" style={{ marginTop: '30px' }}>
                             {row.nome}
-                        </ButtonGreen>)
-                    } else if (random === 1) {
-                        random++;
-                        return (<ButtonYellow onClick={() => history.push({ pathname: "/TipoVenda/Venda", state: { tipoVenda: row.nome } })} size="large" variant="contained" color="primary" style={{ marginTop: first ? '60px' : '30px' }}>
-                            {row.nome}
-                        </ButtonYellow>)
-                    } else if (random === 1) {
-                        random = 0;
-                        return (<ButtonBlue onClick={() => history.push({ pathname: "/TipoVenda/Venda", state: { tipoVenda: row.nome } })} size="large" variant="contained" color="primary" style={{ marginTop: first ? '60px' : '30px' }}>
-                            {row.nome}
-                        </ButtonBlue>)
-                    }
-                })
-                }
+                        </ButtonYellow>
+                    )
+                )}
             </Box>
         );
     }

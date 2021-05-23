@@ -186,22 +186,11 @@ const StyledToggleButton = withStyles({
                     <h1 style={{fontSize: '50px'}}>Vendas</h1>
                     <Button onClick={history.goBack} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
                 </Box>
-                <Grid container spacing={3} style={{marginTop: '20px'}}>
-                    {produtos.map(item => { 
-                        if (item.subTipo === 'HOTDOG') {
-                            return (<Grid item xs={6} style={{ textAlign: 'center' }}><ButtonGreen size="large" variant="contained" onClick={() => this.openModal(item.id, item.nome, item.valor, item.tipo, item.subTipo)}>{item.nome}</ButtonGreen></Grid>)
-                        } else if (item.subTipo === 'HAMBURGUER') {
-                            return (<Grid item xs={6} style={{ textAlign: 'center' }}><ButtonYellow size="large" variant="contained" onClick={() => this.openModal(item.id, item.nome, item.valor, item.tipo, item.subTipo)}>{item.nome}</ButtonYellow></Grid>)
-                        } else if (item.subTipo === 'PREMIUM') {
-                            return (<Grid item xs={6} style={{ textAlign: 'center' }}><ButtonBlue size="large" variant="contained" onClick={() => this.openModal(item.id, item.nome, item.valor, item.tipo, item.subTipo)}>{item.nome}</ButtonBlue></Grid>)
-                        } else if (item.subTipo === 'REFRIGERANTE') {
-                            return (<Grid item xs={6} style={{ textAlign: 'center' }}><ButtonGreen size="large" variant="contained" onClick={() => this.openModal(item.id, item.nome, item.valor, item.tipo, item.subTipo)}>{item.nome}</ButtonGreen></Grid>)
-                        } else if (item.subTipo === 'SUCO') {
-                            return (<Grid item xs={6} style={{ textAlign: 'center' }}><ButtonBlue size="large" variant="contained" onClick={() => this.openModal(item.id, item.nome, item.valor, item.tipo, item.subTipo)}>{item.nome}</ButtonBlue></Grid>)
-                        } else if (item.subTipo === 'CERVEJA') {
-                            return (<Grid item xs={6} style={{ textAlign: 'center' }}><ButtonYellow size="large" variant="contained" onClick={() => this.openModal(item.id, item.nome, item.valor, item.tipo, item.subTipo)}>{item.nome}</ButtonYellow></Grid>)
-                        }
-                    })}
+                <Grid container spacing={3} style={{ marginTop: '20px' }}>
+                    {produtos.map(item => (
+                            <Grid item xs={6} style={{ textAlign: 'center' }}><ButtonGreen size="large" variant="contained" onClick={() => this.openModal(item.id, item.nome, item.valor, item.tipo, item.subTipo)}>{item.nome}</ButtonGreen></Grid>
+                        )
+                    )}
                 </Grid>
                 <Modal
                     aria-labelledby="transition-modal-title"

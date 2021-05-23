@@ -22,28 +22,6 @@ export interface StateSubTipoProduto {
     listaTipoProduto: any[];
 }
 
-const StyledTableCell = withStyles((theme: Theme) =>
-  createStyles({
-    head: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    body: {
-      fontSize: 14,
-    },
-  }),
-)(TableCell);
-
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-      },
-    },
-  }),
-)(TableRow);
-
 class SubTipoProduto extends Component<PropsSubTipoProduto, StateSubTipoProduto> {
     constructor(props: PropsSubTipoProduto) {    
         super(props);    

@@ -29,28 +29,6 @@ export interface StateProduto {
     habilitarCombo: boolean;
 }
 
-const StyledTableCell = withStyles((theme: Theme) =>
-  createStyles({
-    head: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    body: {
-      fontSize: 14,
-    },
-  }),
-)(TableCell);
-
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-      },
-    },
-  }),
-)(TableRow);
-
 class Produto extends Component<PropsProduto, StateProduto> {
     constructor(props: PropsProduto) {    
         super(props);    
@@ -164,8 +142,6 @@ class Produto extends Component<PropsProduto, StateProduto> {
 
     render() {
         const { history } = this.props;
-        const letter = /(,)/i;
-        const digit = /[0-9]/;
         return (
             <div>
                 <Box textAlign='center'>
