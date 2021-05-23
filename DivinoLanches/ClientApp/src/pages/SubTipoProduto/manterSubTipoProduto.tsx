@@ -1,15 +1,11 @@
-import React, { Component, useState } from 'react'
-import { withRouter } from 'react-router';
-import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { green, blue, yellow } from '@material-ui/core/colors';
-import { Box, Button, createStyles, Grid, IconButton, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Theme, Tooltip } from '@material-ui/core';
+import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles';
+import { Box, Button, createStyles, Grid, TableCell, TableRow, TextField, Theme } from '@material-ui/core';
 import { SubTipoProdutoService } from '../../services/SubTipoProduto/subTipoProdutoService'
 import { TipoProdutoService } from '../../services/TipoProduto/tipoProdutoService'
 import { SubTipoProdutoModel } from '../../models/SubTipoProdutoModel'
 import { TipoProdutoModel } from '../../models/TipoProdutoModel'
 import { RetornoModel } from '../../models/RetornoModel'
-import { Delete } from '@material-ui/icons';
-import EditIcon from "@material-ui/icons/Edit";
 
 export interface PropsSubTipoProduto {
     children: React.ReactNode;

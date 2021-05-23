@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import App from './App';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import HomePage from './pages/Principal/home'
 import TipoVenda from './pages/Vendas/tipoVenda'

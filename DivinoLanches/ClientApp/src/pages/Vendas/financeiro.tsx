@@ -1,8 +1,6 @@
-import React, { Component, useState } from 'react'
-import { withRouter } from 'react-router';
-import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { green, blue, yellow } from '@material-ui/core/colors';
-import { Box, Button, TextField, createStyles, IconButton, Paper, Table, Grid, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Tooltip } from '@material-ui/core';
+import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles';
+import { Box, Button, TextField, createStyles, Paper, Table, Grid, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme } from '@material-ui/core';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { SubTipoProdutoService } from '../../services/SubTipoProduto/subTipoProdutoService';
@@ -14,8 +12,6 @@ import { TipoProdutoModel } from '../../models/TipoProdutoModel';
 import { ProdutoModel } from '../../models/ProdutoModel';
 import { VendaModel } from '../../models/VendaModel';
 import { RetornoModel } from '../../models/RetornoModel';
-import { Delete } from '@material-ui/icons';
-import EditIcon from "@material-ui/icons/Edit";
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import TransformIcon from '@material-ui/icons/Transform';
 import LocalAtmIcon from '@material-ui/icons/LocalAtm';

@@ -1,8 +1,6 @@
-import React, { Component, useState } from 'react'
-import { withRouter } from 'react-router';
-import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { green, blue, yellow } from '@material-ui/core/colors';
-import { Box, Button, createStyles, Grid, IconButton, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Theme, Tooltip } from '@material-ui/core';
+import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles';
+import { Box, Button, createStyles, Grid, TableCell, TableRow, TextField, Theme } from '@material-ui/core';
 import { SubTipoProdutoService } from '../../services/SubTipoProduto/subTipoProdutoService'
 import { TipoProdutoService } from '../../services/TipoProduto/tipoProdutoService'
 import { ProdutoService } from '../../services/Produto/produtoService'
@@ -10,10 +8,6 @@ import { SubTipoProdutoModel } from '../../models/SubTipoProdutoModel';
 import { TipoProdutoModel } from '../../models/TipoProdutoModel';
 import { ProdutoModel } from '../../models/ProdutoModel';
 import { RetornoModel } from '../../models/RetornoModel'
-import { Delete } from '@material-ui/icons';
-import EditIcon from "@material-ui/icons/Edit";
-import { isTemplateExpression } from 'typescript';
-import InputMask from "react-input-mask";
 
 export interface PropsProduto {
     children: React.ReactNode;
@@ -172,7 +166,6 @@ class Produto extends Component<PropsProduto, StateProduto> {
         const { history } = this.props;
         const letter = /(,)/i;
         const digit = /[0-9]/;
-        const mask = [digit, letter, " ", digit, letter, digit];
         return (
             <div>
                 <Box textAlign='center'>

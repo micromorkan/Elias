@@ -1,13 +1,12 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component } from 'react'
 import { ProdutoModel } from '../../models/ProdutoModel'
 import { VendaModel } from '../../models/VendaModel'
 import { RetornoModel } from '../../models/RetornoModel'
 import { ProdutoService } from '../../services/Produto/produtoService'
 import { VendaService } from '../../services/Venda/vendaService'
-import { withRouter } from 'react-router';
-import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { green, blue, yellow } from '@material-ui/core/colors';
-import { Box, Button, Fade, Grid, MenuItem, Modal, Select } from '@material-ui/core';
+import { Box, Button, Fade, Grid, Modal } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';

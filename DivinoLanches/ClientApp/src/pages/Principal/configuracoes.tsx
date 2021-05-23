@@ -1,6 +1,5 @@
-import React, { Component, useState } from 'react'
-import { withRouter } from 'react-router';
-import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles';
 import { green, blue, yellow } from '@material-ui/core/colors';
 import { Box, Button } from '@material-ui/core';
 
@@ -50,10 +49,6 @@ export interface StateConfiguracoes {
   }))(Button);
 
   class Configuracoes extends Component<PropsConfiguracoes, StateConfiguracoes> {
-    constructor(props: PropsConfiguracoes) {    
-        super(props);    
-    }
-
     render() {
         const { history } = this.props;
         return (
