@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import registerServiceWorker from './registerServiceWorker';
 import HomePage from './pages/Principal/home'
 import TipoVenda from './pages/Vendas/tipoVenda'
 import Venda from './pages/Vendas/venda'
@@ -39,8 +38,4 @@ const RoutedApp = () => (
     </BrowserRouter>
 );
 
-ReactDOM.render(
-    <RoutedApp />,
-    rootElement);
-
-registerServiceWorker();
+ReactDOM.render(<RoutedApp />, rootElement);

@@ -53,7 +53,7 @@ class TipoVenda extends Component<PropsTipoVenda, StateTipoVenda> {
                 <Button onClick={history.goBack} style={{ marginTop: '10px' }} variant="outlined" color='default'>Voltar</Button>
                 <br />
                 {rows.map((row) => (
-                        <ButtonYellow onClick={() => history.push({ pathname: "/TipoVenda/Venda", state: { tipoVenda: row.nome } })} size="large" variant="contained" color="primary" style={{ marginTop: '31px' }}>
+                        <ButtonYellow onClick={() => history.push({ pathname: "/TipoVenda/Venda", state: { tipoVenda: row.nome } })} size="large" variant="contained" color="primary" style={{ marginTop: '30px' }}>
                             {row.nome}
                         </ButtonYellow>
                     )
