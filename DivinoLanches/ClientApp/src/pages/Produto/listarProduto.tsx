@@ -118,7 +118,7 @@ class ListarProduto extends Component<PropsProduto, StateProduto> {
                                     <StyledTableCell component="th" scope="row">{row.id}</StyledTableCell>
                                     <StyledTableCell align="center">{row.nome}</StyledTableCell>
                                     <StyledTableCell align="center">{row.tipo}</StyledTableCell>
-                                    <StyledTableCell align="center">{row.valor}</StyledTableCell>
+                                    <StyledTableCell align="center">R$ {row.valor}</StyledTableCell>
                                     <StyledTableCell align="center">
                                         <Tooltip title={"Editar"} onClick={() => this.alterarProduto(row.id) } >
                                             <IconButton>
