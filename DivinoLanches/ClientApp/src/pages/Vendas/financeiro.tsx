@@ -16,6 +16,9 @@ import { VendaModel } from '../../models/VendaModel';
 import { RetornoModel } from '../../models/RetornoModel';
 import { Delete } from '@material-ui/icons';
 import EditIcon from "@material-ui/icons/Edit";
+import CreditCardIcon from '@material-ui/icons/CreditCard';
+import TransformIcon from '@material-ui/icons/Transform';
+import LocalAtmIcon from '@material-ui/icons/LocalAtm';
 
 export interface PropsFinanceiro {
     children: React.ReactNode;
@@ -33,6 +36,7 @@ export interface StateFinanceiro {
     dataDe: string;
     dataAte: string;
 
+    formaPagamento: string;
     selecaoData: string;
 }
 
@@ -95,6 +99,7 @@ class Financeiro extends Component<PropsFinanceiro, StateFinanceiro> {
             dataDe: new Date().toLocaleDateString(),
             dataAte: new Date().toLocaleDateString(),
 
+            formaPagamento: '',
             selecaoData: 'HOJE'
         }
     }
@@ -130,34 +135,50 @@ class Financeiro extends Component<PropsFinanceiro, StateFinanceiro> {
     obterFiltro = () => {
 
         let dataDe: string = '';
+        let dataAte: string = '';
         
         if (this.state.selecaoData === 'HOJE') {
             dataDe = new Date().toLocaleDateString();
+            dataAte = this.state.dataAte;
         } else if (this.state.selecaoData === 'SEMANA') {            
             dataDe = new Date(new Date().getTime() - (60 * 60 * 24 * 7 * 1000)).toLocaleDateString();
+            dataAte = this.state.dataAte;
         } else if (this.state.selecaoData === 'MES') {
             dataDe = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toLocaleDateString();
+            dataAte = this.state.dataAte;
+        } else if (this.state.selecaoData === null) {
+            dataDe = '';
+            dataAte = '';
         } else {
             dataDe = this.state.dataDe;
+            dataAte = this.state.dataAte;
         }        
 
         let filtro = {
             dataDe: dataDe,
-            dataAte: this.state.dataAte,
+            dataAte: dataAte,
             nomeProduto: this.state.nomeProduto,
             tipoProduto: this.state.tipoProduto,
             subTipoProduto: this.state.subTipoProduto,
+            formaPagamento: this.state.formaPagamento,
         }
 
         return new VendaModel(filtro);
     }
 
-    handleSelecaoData = (event: React.MouseEvent<HTMLElement>, value: any) => {
+    handleSelecaoData = (event: React.MouseEvent<HTMLElement>, value: any) => {        
         const carregarDados = this.carregarDados;
         this.setState({ selecaoData: value }, function () {
-            if (value === 'HOJE' || value === 'SEMANA' || value === 'MES') {
+            if (value === 'HOJE' || value === 'SEMANA' || value === 'MES' || value === null) {
                 carregarDados();
             }
+        });
+    };
+
+    handleFormaPgto = (event: React.MouseEvent<HTMLElement>, value: any) => {
+        const carregarDados = this.carregarDados;
+        this.setState({ formaPagamento: value }, function () {
+             carregarDados();
         });
     };
 
@@ -211,7 +232,19 @@ class Financeiro extends Component<PropsFinanceiro, StateFinanceiro> {
                         <StyledToggleButton value="OUTRO">
                             Outra
                         </StyledToggleButton>
-                    </ToggleButtonGroup>                    
+                    </ToggleButtonGroup>        
+                    <br />
+                    <ToggleButtonGroup exclusive value={this.state.formaPagamento} onChange={(event, newAlignment) => this.handleFormaPgto(event, newAlignment)}>
+                        <StyledToggleButton value="DINHEIRO">
+                            <LocalAtmIcon />
+                        </StyledToggleButton>
+                        <StyledToggleButton value="CARTÃO">
+                            <CreditCardIcon />
+                        </StyledToggleButton>
+                        <StyledToggleButton value="PIX">
+                            <TransformIcon />
+                        </StyledToggleButton>
+                    </ToggleButtonGroup>
                 </div>
                 <Grid container spacing={3} style={{ marginTop: '20px' }}>
                     <Grid item xs={12} style={{ textAlign: 'center' }}>
@@ -248,6 +281,7 @@ class Financeiro extends Component<PropsFinanceiro, StateFinanceiro> {
                             <StyledTableCell align="center">SubTipo</StyledTableCell>
                             <StyledTableCell align="center">Qtd</StyledTableCell>
                             <StyledTableCell align="center">Valor</StyledTableCell>
+                            <StyledTableCell align="center">F. Pgto</StyledTableCell>
                             <StyledTableCell align="center">Data</StyledTableCell>
                         </TableRow>
                         </TableHead>
@@ -259,9 +293,13 @@ class Financeiro extends Component<PropsFinanceiro, StateFinanceiro> {
                                     <StyledTableCell align="center">{row.subTipoProduto}</StyledTableCell>
                                     <StyledTableCell align="center">{row.quantidade}</StyledTableCell>
                                     <StyledTableCell align="center">{this.formatter.format(row.valorTotal)}</StyledTableCell>                                    
+                                    <StyledTableCell align="center">{row.formaPagamento}</StyledTableCell>                                    
                                     <StyledTableCell align="center">{row.dataVenda}</StyledTableCell>                                    
                                 </StyledTableRow>
                             ))}
+                            <StyledTableRow key={'TOTAL'}>
+                                <StyledTableCell colSpan={7} align="center">Valor Total da Consulta: {this.formatter.format(rows.reduce((accum, item) => accum + item.valorTotal, 0))}</StyledTableCell>
+                            </StyledTableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>
