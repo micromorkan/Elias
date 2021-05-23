@@ -168,7 +168,25 @@ namespace DivinoLanches.Controllers
         {
             try
             {
-                new ProdutoRepo().Excluir(id);
+                ProdutoRepo repo = new ProdutoRepo();
+
+                ProdutoModel model = repo.ObterPorId(id).Result;
+
+                if (new VendaRepo().ObterFiltrado(new VendaModel { NomeProduto = model.Nome }).Result.Count() > 0)
+                {
+                    model.Ativo = false;
+
+                    repo.Alterar(model);
+
+                    return new RetornoModel()
+                    {
+                        Error = false,
+                        Mensagem = "Já existe registros de Venda desse Produto. Ao invés de excluir ele foi alterado para o status Inativo!"
+                    };
+                }
+
+                repo.Excluir(id);
+
                 return new RetornoModel()
                 {
                     Error = false,

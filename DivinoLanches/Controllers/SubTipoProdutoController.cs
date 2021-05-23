@@ -152,7 +152,24 @@ namespace DivinoLanches.Controllers
         {
             try
             {
-                new SubTipoProdutoRepo().Excluir(id);
+                SubTipoProdutoRepo repo = new SubTipoProdutoRepo();
+
+                SubTipoProdutoModel model = repo.ObterPorId(id).Result;
+
+                if (new ProdutoRepo().ObterFiltrado(new ProdutoModel { SubTipo = model.Nome }).Result.Count() > 0)
+                {
+                    model.Ativo = false;
+
+                    repo.Alterar(model);
+
+                    return new RetornoModel()
+                    {
+                        Error = false,
+                        Mensagem = "O Sub Tipo Produto se encontra em uso. Ao invés de excluir ele foi alterado para o status Inativo!"
+                    };
+                }
+
+                repo.Excluir(id);
 
                 return new RetornoModel()
                 {
