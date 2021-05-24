@@ -127,7 +127,7 @@ class Produto extends Component<PropsProduto, StateProduto> {
 
     handleAtivo = (ativo: any) => {
         this.setState({
-            ativo: ativo
+            ativo: ativo === 'true'
         });
     }
 

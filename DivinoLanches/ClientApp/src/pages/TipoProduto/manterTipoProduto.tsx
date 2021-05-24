@@ -58,7 +58,7 @@ class TipoProduto extends Component<PropsTipoProduto, StateTipoProduto> {
             }
 
             let model = new TipoProdutoModel(object);
-
+            
             if (!!this.props.match.params.id) {
                 TipoProdutoService.alterar(model).then((result: RetornoModel) => {
                     alert(result.mensagem)
@@ -81,7 +81,7 @@ class TipoProduto extends Component<PropsTipoProduto, StateTipoProduto> {
 
     handleAtivo = (ativo: any) => {
         this.setState({
-            ativo: ativo
+            ativo: ativo === 'true'
         });
     }
 

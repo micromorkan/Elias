@@ -98,7 +98,7 @@ class SubTipoProduto extends Component<PropsSubTipoProduto, StateSubTipoProduto>
 
     handleAtivo = (ativo: any) => {
         this.setState({
-            ativo: ativo
+            ativo: ativo === 'true'
         });
     }
 
