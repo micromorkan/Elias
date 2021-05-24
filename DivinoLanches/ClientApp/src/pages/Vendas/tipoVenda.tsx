@@ -39,7 +39,7 @@ class TipoVenda extends Component<PropsTipoVenda, StateTipoVenda> {
     }
 
     carregarDados = () => {
-        TipoProdutoService.obterTodos().then((result: RetornoModel) => {
+        TipoProdutoService.obterFiltrado(new TipoProdutoModel({ ativo: true })).then((result: RetornoModel) => {
             this.setState({ listaTodos: result.data });
         });
     }
