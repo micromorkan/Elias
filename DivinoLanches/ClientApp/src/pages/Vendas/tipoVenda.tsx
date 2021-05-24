@@ -1,63 +1,55 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import { yellow } from '@material-ui/core/colors';
+import { green, blue } from '@material-ui/core/colors';
 import { Box, Button } from '@material-ui/core';
-import { TipoProdutoService } from '../../services/TipoProduto/tipoProdutoService'
-import { RetornoModel } from '../../models/RetornoModel'
-import { TipoProdutoModel } from '../../models/TipoProdutoModel'
 
 export interface PropsTipoVenda {
     children: React.ReactNode;
     history?: any;
 }
-export interface StateTipoVenda {
-    listaTodos: TipoProdutoModel[]
+export interface StateTipoVenda {    
 }
-  const ButtonYellow = withStyles((theme) => ({
+
+const ButtonGreen = withStyles((theme) => ({
+root: {
+    height: '100px',
+    width: '80%',
+    borderRadius: 10,    
+        color: theme.palette.getContrastText(green[500]),
+        backgroundColor: green[500],
+    '&:hover': {
+        backgroundColor: green[700],
+    },
+},
+}))(Button);
+
+const ButtonBlue = withStyles((theme) => ({
     root: {
         height: '100px',
         width: '80%',
-        borderRadius: 10,    
-        color: theme.palette.getContrastText(yellow[500]),
-        backgroundColor: yellow[500],
+        borderRadius: 10,
+        color: theme.palette.getContrastText(blue[500]),
+        backgroundColor: blue[500],
         '&:hover': {
-            backgroundColor: yellow[700],
+            backgroundColor: blue[700],
         },
     },
-  }))(Button);
+}))(Button);
 
 class TipoVenda extends Component<PropsTipoVenda, StateTipoVenda> {
-    constructor(props: PropsTipoVenda) {
-        super(props);
-        this.state = {
-            listaTodos: []
-        }
-    }
-
-    componentDidMount() {
-        this.carregarDados();
-    }
-
-    carregarDados = () => {
-        TipoProdutoService.obterFiltrado(new TipoProdutoModel({ ativo: true })).then((result: RetornoModel) => {
-            this.setState({ listaTodos: result.data });
-        });
-    }
-
     render() {
         const { history } = this.props;
-        let rows = this.state.listaTodos;        
         return (
             <Box textAlign='center'>
                 <h1 style={{ fontSize: '50px' }}>Vendas</h1>
                 <Button onClick={history.goBack} style={{ marginTop: '10px' }} variant="outlined" color='default'>Voltar</Button>
                 <br />
-                {rows.map((row) => (
-                        <ButtonYellow onClick={() => history.push({ pathname: "/TipoVenda/Venda", state: { tipoVenda: row.nome } })} size="large" variant="contained" color="primary" style={{ marginTop: '30px' }}>
-                            {row.nome}
-                        </ButtonYellow>
-                    )
-                )}
+                <ButtonGreen onClick={() => history.push({ pathname: "/TipoVenda/VendaAvulsa"})} size="large" variant="contained" color="primary" style={{ marginTop: '30px' }}>
+                    Avulso
+                </ButtonGreen>
+                <ButtonBlue onClick={() => history.push({ pathname: "/TipoVenda/GerenciarComandas"})} size="large" variant="contained" color="primary" style={{ marginTop: '30px' }}>
+                    Comandas
+                </ButtonBlue>
             </Box>
         );
     }
