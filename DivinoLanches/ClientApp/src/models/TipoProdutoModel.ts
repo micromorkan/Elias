@@ -2,7 +2,7 @@ export class TipoProdutoModel {
 
     id: number;   
     nome: string;    
-    ativo: boolean;
+    ativo: string;
     
     constructor(obj: any) {
         this.id = obj.id

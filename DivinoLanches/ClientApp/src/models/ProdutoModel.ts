@@ -5,7 +5,7 @@ export class ProdutoModel {
     tipo: string
     subTipo: string
     valor: string
-    ativo: boolean
+    ativo: string
 
     constructor(obj: any) {
         this.id = obj.id

@@ -3,7 +3,7 @@ export class SubTipoProdutoModel {
     id: number
     tipoProduto: string
     nome: string
-    ativo: boolean
+    ativo: string
 
     constructor(obj: any) {
         this.id = obj.id
