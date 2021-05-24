@@ -130,7 +130,7 @@ namespace DivinoLanches.Repository
             command.Parameters.AddWithValue("@formapagamento", model.FormaPagamento);
             command.Parameters.AddWithValue("@quantidade", model.Quantidade);
             command.Parameters.AddWithValue("@valortotal", Convert.ToDouble(model.ValorTotal));
-            command.Parameters.AddWithValue("@datavenda", DateTime.Now);
+            command.Parameters.AddWithValue("@datavenda", DateTime.Now.AddHours(-3));
 
             command.ExecuteNonQuery();
 
