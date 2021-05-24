@@ -107,7 +107,7 @@ namespace DivinoLanches.Repository
 
             using var command = new MySqlCommand("INSERT INTO produto (nome, tipo, subtipo, valor, ativo) VALUES (@nome, @tipo, @subtipo, @valor, @ativo);", connection);
 
-            command.Parameters.AddWithValue("@nome", model.Nome);
+            command.Parameters.AddWithValue("@nome", model.Nome.ToUpper());
             command.Parameters.AddWithValue("@tipo", model.Tipo);
             command.Parameters.AddWithValue("@subtipo", model.SubTipo);
             command.Parameters.AddWithValue("@valor", Convert.ToDouble(model.Valor));
@@ -127,7 +127,7 @@ namespace DivinoLanches.Repository
             using var command = new MySqlCommand("UPDATE produto set nome = @nome, tipo = @tipo, subtipo = @subtipo, ativo = @ativo WHERE id = @id;", connection);
             
             command.Parameters.AddWithValue("@id", model.Id);
-            command.Parameters.AddWithValue("@nome", model.Nome);
+            command.Parameters.AddWithValue("@nome", model.Nome.ToUpper());
             command.Parameters.AddWithValue("@tipo", model.Tipo);
             command.Parameters.AddWithValue("@subtipo", model.SubTipo);
             command.Parameters.AddWithValue("@valor", Convert.ToDouble(model.Valor));

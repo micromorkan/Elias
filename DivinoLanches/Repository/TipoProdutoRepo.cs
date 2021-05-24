@@ -116,7 +116,7 @@ namespace DivinoLanches.Repository
             using var command = new MySqlCommand("UPDATE tipoproduto set nome = @nome, ativo = @ativo WHERE id = @id;", connection);
             
             command.Parameters.AddWithValue("@id", model.Id);
-            command.Parameters.AddWithValue("@nome", model.Nome);
+            command.Parameters.AddWithValue("@nome", model.Nome.ToUpper());
             command.Parameters.AddWithValue("@ativo", model.Ativo);
 
             command.ExecuteNonQuery();
