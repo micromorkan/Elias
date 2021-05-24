@@ -91,7 +91,10 @@ namespace DivinoLanches.Repository
             {
                 obj.Id = Convert.ToInt32(reader.GetValue(0));
                 obj.Nome = reader.GetValue(1).ToString();
-                obj.Ativo = Convert.ToBoolean(reader.GetValue(2));
+                obj.Tipo = reader.GetValue(2).ToString();
+                obj.SubTipo = reader.GetValue(3).ToString();
+                obj.Valor = reader.GetValue(4).ToString();
+                obj.Ativo = Convert.ToBoolean(reader.GetValue(5));
             }
 
             await connection.CloseAsync();

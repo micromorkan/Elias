@@ -69,7 +69,7 @@ namespace DivinoLanches.Controllers
             {
                 return new RetornoModel()
                 {
-                    Data = new ProdutoRepo().ObterPorId(id),
+                    Data = new ProdutoRepo().ObterPorId(id).Result,
                     Error = false
                 };
             }

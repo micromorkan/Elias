@@ -51,7 +51,7 @@ class Produto extends Component<PropsProduto, StateProduto> {
                     id: result.data.id,
                     nome: result.data.nome,
                     tipo: result.data.tipo,
-                    subtipo: result.data.subtipo,
+                    subtipo: result.data.subTipo,
                     valor: result.data.valor,
                     ativo: result.data.ativo,
                     habilitarCombo: true
