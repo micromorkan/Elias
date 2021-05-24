@@ -98,7 +98,7 @@ class ListarComanda extends Component<PropsComanda, StateComanda> {
             <div>
                 <Box textAlign='center'>
                     <h1 style={{fontSize: '50px'}}>Comandas</h1>
-                    <Button onClick={history.goBack} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
+                    <Button onClick={() => history.push("/TipoVenda")} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
                     <Button onClick={() => this.openModal()} style={{marginTop: '10px', marginLeft: '20px'}} variant="contained" color='primary'>Nova Comanda</Button>
                 </Box>
                 <Grid container spacing={3} style={{ marginTop: '20px' }}>

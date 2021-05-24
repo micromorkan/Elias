@@ -93,9 +93,13 @@ namespace DivinoLanches.Controllers
         {
             try
             {
+                new ComandaRepo().Incluir(model);
+
+                model.Ativo = true;
+
                 return new RetornoModel()
                 {
-                    Data = new ComandaRepo().Incluir(model).Result,
+                    Data = new ComandaRepo().ObterFiltrado(model).Result.First(),
                     Error = false,
                     Mensagem = "Incluído com sucesso!"
                 };

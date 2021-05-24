@@ -42,9 +42,10 @@ namespace DivinoLanches.Repository
 
             await connection.OpenAsync();
 
-            using var command = new MySqlCommand("SELECT * FROM comanda WHERE (ativo = @ativo or @ativo is null);", connection);
+            using var command = new MySqlCommand("SELECT * FROM comanda WHERE (ativo = @ativo or @ativo is null) and (nomecliente = @nomecliente or @nomecliente is null);", connection);
 
             command.Parameters.AddWithValue("@ativo", model.Ativo);
+            command.Parameters.AddWithValue("@nomecliente", model.NomeCliente);
             
             using var reader = await command.ExecuteReaderAsync();
 
@@ -174,7 +175,7 @@ namespace DivinoLanches.Repository
 
             ComandaModel obj = new ComandaModel();
 
-            obj.Id = command.ExecuteNonQuery();
+            command.ExecuteNonQuery();
 
             await connection.CloseAsync();
 
