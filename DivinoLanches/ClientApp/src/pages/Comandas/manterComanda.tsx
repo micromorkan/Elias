@@ -92,7 +92,11 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
     }
 
     carregarDados = () => {
-        ComandaService.obterPorId(this.props.match.params.id).then((result: RetornoModel) => {            
+        ComandaService.obterPorId(this.props.match.params.id).then((result: RetornoModel) => {    
+            console.log(result)
+            if (!result.data.ativo) {
+                this.props.history.push("/TipoVenda/GerenciarComandas");
+            }
             this.setState({
                 id: result.data.id,
                 nomeCliente: result.data.nomeCliente,
