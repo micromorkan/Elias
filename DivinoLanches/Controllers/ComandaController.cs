@@ -239,12 +239,12 @@ namespace DivinoLanches.Controllers
             }
         }
 
-        [HttpGet("ExcluirProdutoComanda/{id}")]
-        public RetornoModel ExcluirProdutoComanda([FromRoute] int id)
+        [HttpGet("ExcluirProdutoComanda")]
+        public RetornoModel ExcluirProdutoComanda(int idProduto, int qtdAtual, int qtdRemover)
         {
             try
             {
-                new ComandaRepo().ExcluirProdutoComanda(id);
+                new ComandaRepo().ExcluirProdutoComanda(idProduto, qtdAtual, qtdRemover);
 
                 return new RetornoModel()
                 {

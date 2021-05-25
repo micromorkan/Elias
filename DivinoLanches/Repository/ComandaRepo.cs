@@ -277,18 +277,30 @@ namespace DivinoLanches.Repository
             await connection.CloseAsync();
         }
 
-        public async void ExcluirProdutoComanda(int id)
+        public async void ExcluirProdutoComanda(int idProduto, int qtdAtual, int qtdRemover)
         {
             using var connection = new MySqlConnection(Constantes.ConnetionString);
 
             await connection.OpenAsync();
 
-            using var command = new MySqlCommand("DELETE FROM produtocomanda WHERE id = @id;", connection);
-            
-            command.Parameters.AddWithValue("@id", id);
+            if (qtdRemover == qtdAtual)
+            {
+                using var command = new MySqlCommand("DELETE FROM produtocomanda WHERE id = @idProduto;", connection);
 
-            command.ExecuteNonQuery();
+                command.Parameters.AddWithValue("@idProduto", idProduto);
 
+                command.ExecuteNonQuery();
+            }
+            else
+            {                
+                using var command = new MySqlCommand("UPDATE produtocomanda SET quantidade = (quantidade - @qtdremover)  WHERE id = @idProduto;", connection);
+
+                command.Parameters.AddWithValue("@idProduto", idProduto);
+                command.Parameters.AddWithValue("@qtdRemover", qtdRemover);
+
+                command.ExecuteNonQuery();
+            }
+          
             await connection.CloseAsync();
         }
     }

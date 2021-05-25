@@ -131,8 +131,8 @@ async function excluir(id: number) {
     }
 }
 
-async function excluirProdutoComanda(id: number) {
-    const response = await fetch('comanda/ExcluirProdutoComanda/' + id);
+async function excluirProdutoComanda(idProduto: number, qtdAtual: number, qtdRemover: number) {
+    const response = await fetch('comanda/ExcluirProdutoComanda?idProduto=' + idProduto + '&qtdAtual=' + qtdAtual + '&qtdRemover=' + qtdRemover);       
     if (response.status === 200) {
         const result = await response.json();
         return Promise.resolve(result);

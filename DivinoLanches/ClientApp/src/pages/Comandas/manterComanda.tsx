@@ -25,8 +25,13 @@ export interface StateProduto {
     formaPagamento: string;
     listaProdutosComanda: ProdutoComandaModel[];
 
+    idProdutoComanda: number;
+    nomeProduto: string;
+    qtdEmUso: number;
+    qtdRemover: number;
     valorTotal: number;
     open: boolean;
+    openExclusao: boolean;
 }
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -82,8 +87,13 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
             formaPagamento: '',
             listaProdutosComanda: [],
 
+            idProdutoComanda: 0,
+            nomeProduto: '',
+            qtdEmUso: 0,
+            qtdRemover: 0,
             valorTotal: 0,
-            open: false
+            open: false,
+            openExclusao: false
         }
     }
 
@@ -92,8 +102,7 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
     }
 
     carregarDados = () => {
-        ComandaService.obterPorId(this.props.match.params.id).then((result: RetornoModel) => {    
-            console.log(result)
+        ComandaService.obterPorId(this.props.match.params.id).then((result: RetornoModel) => {                
             if (!result.data.ativo) {
                 this.props.history.push("/TipoVenda/GerenciarComandas");
             }
@@ -106,14 +115,21 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
         });
     }
 
-    excluirProduto = (id: any) => {
-        ComandaService.excluirProdutoComanda(id).then((result: RetornoModel) => {
-            if (!result.error) {
-                this.carregarDados();
-            }
-        }).catch((result: RetornoModel) => {
-            alert(result.mensagem)
-        });
+    excluirProduto = () => {
+        if (this.state.idProdutoComanda === 0) {
+
+        } else if (this.state.qtdRemover === 0) {
+            alert('Informe a quantidade a ser removida');
+        } else {
+            ComandaService.excluirProdutoComanda(this.state.idProdutoComanda, this.state.qtdEmUso, this.state.qtdRemover).then((result: RetornoModel) => {
+                if (!result.error) {
+                    this.closeModalExclusao();
+                    this.carregarDados();
+                }
+            }).catch((result: RetornoModel) => {
+                alert(result.mensagem);
+            });
+        }
     }
 
     finalizarComanda = () => {
@@ -148,7 +164,7 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
         }
     }
 
-    handleFormaPagamento = (event: React.MouseEvent<HTMLElement>, value: any) => {
+    handleFormaPagamento = (event: React.MouseEvent<HTMLElement>, value: any) => {        
         this.setState({ formaPagamento: value });
     };
 
@@ -160,6 +176,28 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
 
     closeModal = () => {
         this.setState({ open: false });
+    };
+
+    openModalExclusao = (idProdutoComanda: number, nomeProduto: string, qtdEmUso: number) => {
+        this.setState({
+            openExclusao: true,
+            idProdutoComanda: idProdutoComanda,
+            nomeProduto: nomeProduto,
+            qtdEmUso: qtdEmUso
+        });
+    };
+
+    closeModalExclusao = () => {
+        this.setState({
+            openExclusao: false,
+            idProdutoComanda: 0,
+            nomeProduto: '',
+            qtdEmUso: 0
+        });
+    };
+
+    handleQtd = (event: React.MouseEvent<HTMLElement>, value: any) => {       
+        this.setState({ qtdRemover: value === null ? 0 : value });
     };
 
     formatter = new Intl.NumberFormat("pt-BR", {
@@ -197,7 +235,7 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
                                     <StyledTableCell align="center">{row.quantidade}</StyledTableCell>
                                     <StyledTableCell align="center">{this.formatter.format(row.valor * row.quantidade)}</StyledTableCell>
                                     <StyledTableCell align="center">
-                                        <Tooltip title={"Excluir"} onClick={() => { this.excluirProduto(row.id); }}>
+                                        <Tooltip title={"Excluir"} onClick={() => { this.openModalExclusao(row.id, row.nomeProduto, row.quantidade); }}>
                                             <IconButton>
                                                 <Delete />
                                             </IconButton>
@@ -262,6 +300,79 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
                                 </div>
                             <br /><br />
                             <Button variant="contained" color='primary' onClick={this.finalizarComanda}>Finalizar Comanda</Button>
+                        </div>
+                    </Fade>
+                </Modal>
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    open={this.state.openExclusao}
+                    onClose={this.closeModalExclusao}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={this.state.openExclusao}>
+                        <div style={{ backgroundColor: '#FFF', border: '2px solid #000', padding: '2em 4em 3em', textAlign: 'center' }}>
+                            <h3>Remover - {this.state.nomeProduto}</h3>
+                            <h3>Escolha a quantidade para remover</h3>
+                            <div>
+                                <br />
+                                <ToggleButtonGroup exclusive value={this.state.qtdRemover} onChange={(event, newAlignment) => this.handleQtd(event, newAlignment)}>
+                                    <StyledToggleButton value="1">
+                                        1
+                                    </StyledToggleButton>
+                                    {this.state.qtdEmUso >= 2 && (
+                                        <StyledToggleButton value="2">
+                                            2
+                                        </StyledToggleButton>
+                                    )}
+                                    {this.state.qtdEmUso >= 3 && (
+                                        <StyledToggleButton value="3">
+                                            3
+                                        </StyledToggleButton>
+                                    )}
+                                </ToggleButtonGroup>
+                                <ToggleButtonGroup exclusive value={this.state.qtdRemover} onChange={(event, newAlignment) => this.handleQtd(event, newAlignment)}>
+                                    {this.state.qtdEmUso >= 4 && (
+                                        <StyledToggleButton value="4">
+                                            4
+                                        </StyledToggleButton>
+                                    )}
+                                    {this.state.qtdEmUso >= 5 && (
+                                        <StyledToggleButton value="5">
+                                            5
+                                        </StyledToggleButton>
+                                    )}
+                                    {this.state.qtdEmUso >= 6 && (
+                                        <StyledToggleButton value="6">
+                                            6
+                                        </StyledToggleButton>
+                                    )}
+                                </ToggleButtonGroup>
+                                <ToggleButtonGroup exclusive value={this.state.qtdRemover} onChange={(event, newAlignment) => this.handleQtd(event, newAlignment)}>
+                                    {this.state.qtdEmUso >= 7 && (
+                                        <StyledToggleButton value="7">
+                                            7
+                                        </StyledToggleButton>
+                                    )}
+                                    {this.state.qtdEmUso >= 8 && (
+                                        <StyledToggleButton value="8">
+                                            8
+                                        </StyledToggleButton>
+                                    )}
+                                    {this.state.qtdEmUso >= 9 && (
+                                        <StyledToggleButton value="9">
+                                            9
+                                        </StyledToggleButton>
+                                    )}
+                                </ToggleButtonGroup>
+                            </div>
+                            <br /><br />
+                            <Button variant="contained" color='primary' onClick={() => this.excluirProduto()}>Confirmar</Button>
                         </div>
                     </Fade>
                 </Modal>
