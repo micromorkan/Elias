@@ -155,7 +155,7 @@ class Produto extends Component<PropsProduto, StateProduto> {
         return (
             <div>
                 <Box textAlign='center'>
-                    <h1 style={{fontSize: '50px'}}>Produto</h1>
+                    <h1 style={{fontSize: '30px'}}>Produto</h1>
                     <Button onClick={history.goBack} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
                     <br />
                     <br />

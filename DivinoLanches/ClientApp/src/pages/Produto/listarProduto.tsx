@@ -130,7 +130,7 @@ class ListarProduto extends Component<PropsProduto, StateProduto> {
         return (
             <div>
                 <Box textAlign='center'>
-                    <h1 style={{fontSize: '50px'}}>Produtos</h1>
+                    <h1 style={{fontSize: '30px'}}>Produtos</h1>
                     <Button onClick={history.goBack} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
                     <Button onClick={()=> history.push({pathname: "/Configuracoes/ManterProduto"})} style={{marginTop: '10px', marginLeft: '20px'}} variant="contained" color='primary'>Incluir Novo</Button>
                 </Box>
