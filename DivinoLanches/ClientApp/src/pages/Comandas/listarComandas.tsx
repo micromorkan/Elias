@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import { orange } from '@material-ui/core/colors';
-import { Box, Button, Fade, Modal, Grid, TextField  } from '@material-ui/core';
+import { Box, Button, Fade, Modal, Grid, TextField } from '@material-ui/core';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Backdrop from '@material-ui/core/Backdrop';
 import { ComandaService } from '../../services/Comanda/comandaService';
 import { ComandaModel } from '../../models/ComandaModel';
 import { RetornoModel } from '../../models/RetornoModel';
+import CachedIcon from '@material-ui/icons/Cached';
 
 export interface PropsComanda {
     children: React.ReactNode;
@@ -15,6 +18,8 @@ export interface StateComanda {
     listaTodosComanda: ComandaModel[];
     nomeCliente: string;
     open: boolean;
+    update: string;
+    reload: boolean;
 }
 
 const ButtonOrange = withStyles((theme) => ({
@@ -30,23 +35,49 @@ const ButtonOrange = withStyles((theme) => ({
     },
 }))(Button);
 
+const StyledToggleButton = withStyles({
+    root: {
+        marginLeft: '10px',
+        fontFamily: 'Arial',
+        fontSize: '14px',
+        lineHeight: '20px',
+        letterSpacing: '0.25px',
+        color: 'rgba(0, 0, 0, 0.87)',
+        padding: '8px 8px',
+        textTransform: 'none',
+        width: '100%',
+        '&$selected': {
+            backgroundColor: 'rgba(1, 255, 20, 0.20)',
+            color: 'rgb(26, 88, 159)',
+            '&:hover': {
+                backgroundColor: 'rgba(1, 255, 20, 0.20)',
+                color: 'rgb(26, 88, 159)',
+            },
+        },
+    },
+    selected: {},
+})(ToggleButton);
+
 class ListarComanda extends Component<PropsComanda, StateComanda> {
     constructor(props: PropsComanda) {    
         super(props);    
         this.state = {
             listaTodosComanda: [],
             nomeCliente: '',
-            open: false
+            open: false,
+            update: '1',
+            reload: true
         }
     }
 
     componentDidMount() {
         this.carregarDados();
+        setInterval(this.reloadComanda, 10000);
     }
 
     carregarDados = () => {
         ComandaService.obterFiltrado(new ComandaModel({ ativo: true })).then((result: RetornoModel) => {
-            this.setState({ listaTodosComanda: result.data });
+            this.setState({ listaTodosComanda: result.data, reload: true });
         });
     }
 
@@ -81,6 +112,17 @@ class ListarComanda extends Component<PropsComanda, StateComanda> {
         this.setState(newState);
     };
 
+    handleUpdate = (event: React.MouseEvent<HTMLElement>, value: any) => {
+        this.setState({ update: value === null ? '0' : value });
+    };
+
+    reloadComanda = () => {
+        if (this.state.update === '1' && this.state.reload) {
+            this.setState({ reload: false });
+            this.carregarDados();
+        }
+    }
+
     openModal = () => {
         this.setState({ open: true });
 
@@ -98,8 +140,13 @@ class ListarComanda extends Component<PropsComanda, StateComanda> {
             <div>
                 <Box textAlign='center'>
                     <h1 style={{fontSize: '30px'}}>Comandas</h1>
-                    <Button onClick={() => history.push("/TipoVenda")} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
-                    <Button onClick={() => this.openModal()} style={{marginTop: '10px', marginLeft: '20px'}} variant="contained" color='primary'>Nova Comanda</Button>
+                    <Button onClick={() => history.push("/TipoVenda")} style={{ marginTop: '-10px' }} variant="outlined" color='default'>Voltar</Button>
+                    <ToggleButtonGroup exclusive value={this.state.update} onChange={(event, newAlignment) => this.handleUpdate(event, newAlignment)}>
+                        <StyledToggleButton value="1">
+                            <CachedIcon/>
+                        </StyledToggleButton>
+                    </ToggleButtonGroup>
+                    <Button onClick={() => this.openModal()} style={{marginTop: '-10px', marginLeft: '10px'}} variant="contained" color='primary'>Incluir</Button>
                 </Box>
                 <Grid container spacing={3} style={{ marginTop: '20px' }}>
                     {rows.map(row => (

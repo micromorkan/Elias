@@ -12,6 +12,7 @@ import { ComandaModel } from '../../models/ComandaModel';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import TransformIcon from '@material-ui/icons/Transform';
 import LocalAtmIcon from '@material-ui/icons/LocalAtm';
+import CachedIcon from '@material-ui/icons/Cached';
 
 export interface PropsProduto {
     children: React.ReactNode;
@@ -32,6 +33,9 @@ export interface StateProduto {
     valorTotal: number;
     open: boolean;
     openExclusao: boolean;
+
+    update: string;
+    reload: boolean;
 }
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -78,6 +82,29 @@ const StyledToggleButton = withStyles({
     selected: {},
 })(ToggleButton);
 
+const StyledToggleReload = withStyles({
+    root: {
+        marginLeft: '10px',
+        fontFamily: 'Arial',
+        fontSize: '14px',
+        lineHeight: '20px',
+        letterSpacing: '0.25px',
+        color: 'rgba(0, 0, 0, 0.87)',
+        padding: '8px 8px',
+        textTransform: 'none',
+        width: '100%',
+        '&$selected': {
+            backgroundColor: 'rgba(1, 255, 20, 0.20)',
+            color: 'rgb(26, 88, 159)',
+            '&:hover': {
+                backgroundColor: 'rgba(1, 255, 20, 0.20)',
+                color: 'rgb(26, 88, 159)',
+            },
+        },
+    },
+    selected: {},
+})(ToggleButton);
+
 class ManterComanda extends Component<PropsProduto, StateProduto> {
     constructor(props: PropsProduto) {    
         super(props);    
@@ -93,12 +120,16 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
             qtdRemover: 0,
             valorTotal: 0,
             open: false,
-            openExclusao: false
+            openExclusao: false,
+
+            update: '1',
+            reload: true
         }
     }
 
     componentDidMount() {        
         this.carregarDados();
+        setInterval(this.reloadItensComanda, 10000);
     }
 
     carregarDados = () => {
@@ -110,9 +141,17 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
                 id: result.data.id,
                 nomeCliente: result.data.nomeCliente,
                 listaProdutosComanda: result.data.listaProdutos,
-                valorTotal: result.data.listaProdutos.reduce((accum: number, item: any) => accum + (item.valor * item.quantidade), 0)
+                valorTotal: result.data.listaProdutos.reduce((accum: number, item: any) => accum + (item.valor * item.quantidade), 0),
+                reload: true 
             });
         });
+    }
+
+    reloadItensComanda = () => {
+        if (this.state.update === '1' && this.state.reload) {
+            this.setState({ reload: false });
+            this.carregarDados();
+        }
     }
 
     excluirProduto = () => {
@@ -168,6 +207,10 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
         this.setState({ formaPagamento: value });
     };
 
+    handleUpdate = (event: React.MouseEvent<HTMLElement>, value: any) => {
+        this.setState({ update: value === null ? '0' : value });
+    };
+
     openModal = () => {
         this.setState({
             open: true,
@@ -212,10 +255,13 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
             <div>
                 <Box textAlign='center'>
                     <h1 style={{ fontSize: '20px' }}>Comanda - {this.state.nomeCliente}</h1>
-                    <Button onClick={() => history.push("/TipoVenda/GerenciarComandas")} style={{ marginTop: '10px' }} variant="outlined" color='default'>Voltar</Button>
-                    <br />
-                    <br />
-                    <Button onClick={() => history.push({ pathname: "/TipoVenda/TipoVendaComanda", state: { idComanda: this.state.id, nomeCliente: this.state.nomeCliente  } })} variant="contained" color='primary'>Incluir Produto</Button>
+                    <Button onClick={() => history.push("/TipoVenda/GerenciarComandas")} style={{ marginTop: '-10px' }} variant="outlined" color='default'>Voltar</Button>
+                    <ToggleButtonGroup exclusive value={this.state.update} onChange={(event, newAlignment) => this.handleUpdate(event, newAlignment)}>
+                        <StyledToggleReload value="1">
+                            <CachedIcon />
+                        </StyledToggleReload>
+                    </ToggleButtonGroup>
+                    <Button style={{ marginTop: '-10px', marginLeft: '10px' }} onClick={() => history.push({ pathname: "/TipoVenda/TipoVendaComanda", state: { idComanda: this.state.id, nomeCliente: this.state.nomeCliente  } })} variant="contained" color='primary'>Incluir</Button>
                     <br />
                 </Box>
                 <TableContainer component={Paper} style={{ marginTop: '20px' }}>
