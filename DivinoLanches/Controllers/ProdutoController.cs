@@ -172,7 +172,21 @@ namespace DivinoLanches.Controllers
 
                 ProdutoModel model = repo.ObterPorId(id).Result;
 
-                if (new VendaRepo().ObterFiltrado(new VendaModel { NomeProduto = model.Nome }).Result.Count() > 0)
+                List<ComandaModel> listaComandas = new ComandaRepo().ObterFiltrado(new ComandaModel { Ativo = true }).Result;
+                bool produtoEmComanda = false;
+
+                foreach (ComandaModel item in listaComandas)
+                {
+                    List<ProdutoComandaModel> listaProdutoComanda = new ComandaRepo().ObterProdutosComandaPorId(item.Id).Result;
+
+                    if (listaProdutoComanda.Where(x => x.NomeProduto == model.Nome).Count() > 0)
+                    {
+                        produtoEmComanda = true;
+                        break;
+                    }
+                }
+
+                if (new VendaRepo().ObterFiltrado(new VendaModel { NomeProduto = model.Nome }).Result.Count() > 0 || produtoEmComanda)
                 {
                     model.Ativo = false;
 
