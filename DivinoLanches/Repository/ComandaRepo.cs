@@ -161,25 +161,24 @@ namespace DivinoLanches.Repository
             return obj;
         }
 
-        public async Task<ComandaModel> Incluir(ComandaModel model)
+        public async Task<int> Incluir(ComandaModel model)
         {
             using var connection = new MySqlConnection(Constantes.ConnetionString);
 
             await connection.OpenAsync();
 
-            using var command = new MySqlCommand("INSERT INTO comanda (nomecliente, valortotal, ativo) VALUES (@nomecliente, @valortotal, @ativo);", connection);
+            using var command = new MySqlCommand("INSERT INTO comanda (nomecliente, valortotal, ativo) VALUES (@nomecliente, @valortotal, @ativo);" +
+                "                                 SELECT last_insert_id();", connection);
 
             command.Parameters.AddWithValue("@nomecliente", model.NomeCliente.ToUpper());
             command.Parameters.AddWithValue("@valortotal", 0);
             command.Parameters.AddWithValue("@ativo", true);
 
-            ComandaModel obj = new ComandaModel();
-
-            command.ExecuteNonQuery();
+            int id = Convert.ToInt32(command.ExecuteScalar());
 
             await connection.CloseAsync();
 
-            return obj;
+            return id;
         }
 
         public async void IncluirProdutoComanda(ProdutoComandaModel model)

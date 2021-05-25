@@ -102,7 +102,7 @@ class ListarProduto extends Component<PropsProduto, StateProduto> {
     }
 
     excluirProduto = (id: any) => {
-        SubTipoProdutoService.excluir(id).then((result: RetornoModel) => {
+        ProdutoService.excluir(id).then((result: RetornoModel) => {
             if (!result.error) {
                 this.carregarDados();
             }

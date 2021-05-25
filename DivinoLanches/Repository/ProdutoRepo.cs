@@ -127,7 +127,7 @@ namespace DivinoLanches.Repository
 
             await connection.OpenAsync();
 
-            using var command = new MySqlCommand("UPDATE produto set nome = @nome, tipo = @tipo, subtipo = @subtipo, ativo = @ativo WHERE id = @id;", connection);
+            using var command = new MySqlCommand("UPDATE produto set nome = @nome, tipo = @tipo, subtipo = @subtipo, valor = @valor, ativo = @ativo WHERE id = @id;", connection);
             
             command.Parameters.AddWithValue("@id", model.Id);
             command.Parameters.AddWithValue("@nome", model.Nome.ToUpper());

@@ -32,7 +32,7 @@ class IncluirProdutoComanda extends Component<PropsProdutoComanda, StateProdutoC
 
         ComandaService.incluirProdutoComanda(produtoComandaModel).then(() => {
             this.props.history.push('/TipoVenda/ManterComanda/' + this.props.location.state.idComanda)
-            alert("Produto incluido com sucesso!")            
+            //alert("Produto incluido com sucesso!")            
         }).catch(error => {
             alert('Ocorreu um erro ao salvar: ' + error);
         });

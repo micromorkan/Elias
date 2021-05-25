@@ -68,7 +68,7 @@ class ListarComanda extends Component<PropsComanda, StateComanda> {
             ComandaService.incluir(model).then((result: RetornoModel) => {
                 this.closeModal();
                 console.log(result)
-                this.props.history.push({ pathname: "/TipoVenda/ManterComanda/" + result.data.id });
+                this.props.history.push({ pathname: "/TipoVenda/ManterComanda/" + result.data });
             }).catch(error => {
                 alert('Ocorreu um erro ao salvar: ' + error);
             });
