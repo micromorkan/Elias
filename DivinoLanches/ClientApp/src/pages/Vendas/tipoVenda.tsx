@@ -42,7 +42,7 @@ class TipoVenda extends Component<PropsTipoVenda, StateTipoVenda> {
         return (
             <Box textAlign='center'>
                 <h1 style={{ fontSize: '50px' }}>Vendas</h1>
-                <Button onClick={history.goBack} style={{ marginTop: '10px' }} variant="outlined" color='default'>Voltar</Button>
+                <Button onClick={() => history.push('/')} style={{ marginTop: '10px' }} variant="outlined" color='default'>Voltar</Button>
                 <br />
                 <ButtonGreen onClick={() => history.push({ pathname: "/TipoVenda/VendaAvulsa"})} size="large" variant="contained" color="primary" style={{ marginTop: '30px' }}>
                     Avulso
