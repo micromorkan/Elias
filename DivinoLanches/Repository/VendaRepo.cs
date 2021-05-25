@@ -137,6 +137,51 @@ namespace DivinoLanches.Repository
             await connection.CloseAsync();
         }
 
+        public async Task<bool> IncluirTodos(List<VendaModel> list)
+        {
+            using var connection = new MySqlConnection(Constantes.ConnetionString);
+            MySqlTransaction transaction = null;
+
+            try
+            {
+                await connection.OpenAsync();
+                transaction = connection.BeginTransaction();
+
+                MySqlCommand command = new MySqlCommand();
+                command.Connection = connection;
+                command.Transaction = transaction;
+
+                foreach (VendaModel model in list)
+                {
+                    command.Parameters.Clear();
+
+                    command.CommandText = "INSERT INTO venda (nomeproduto, tipoproduto, subtipoproduto, formapagamento, quantidade, valortotal, datavenda) VALUES " +
+                    "                                        (@nomeproduto, @tipoproduto, @subtipoproduto, @formapagamento, @quantidade, @valortotal, @datavenda);";
+
+                    command.Parameters.AddWithValue("@nomeproduto", model.NomeProduto);
+                    command.Parameters.AddWithValue("@tipoproduto", model.TipoProduto);
+                    command.Parameters.AddWithValue("@subtipoproduto", model.SubTipoProduto);
+                    command.Parameters.AddWithValue("@formapagamento", model.FormaPagamento);
+                    command.Parameters.AddWithValue("@quantidade", model.Quantidade);
+                    command.Parameters.AddWithValue("@valortotal", Convert.ToDouble(model.ValorTotal));
+                    command.Parameters.AddWithValue("@datavenda", DateTime.Now.AddHours(-3));
+
+                    command.ExecuteNonQuery();
+                }
+                
+                await transaction.CommitAsync();
+                await connection.CloseAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                await connection.CloseAsync();
+                throw ex;
+            }
+        }
+
         public async void Alterar(VendaModel model)
         {
             using var connection = new MySqlConnection(Constantes.ConnetionString);

@@ -119,7 +119,7 @@ namespace DivinoLanches.Repository
             command.ExecuteNonQuery();
 
             await connection.CloseAsync();
-        }
+        }        
 
         public async void Alterar(ProdutoModel model)
         {

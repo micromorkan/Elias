@@ -48,7 +48,7 @@ namespace DivinoLanches.Controllers
             {
                 return new RetornoModel()
                 {
-                    Data = new VendaRepo().ObterFiltrado(model).Result,
+                    Data = new VendaRepo().ObterFiltrado(model).Result.OrderByDescending(o => Convert.ToDateTime(o.DataVenda)).ToList(),
                     Error = false
                 };
             }

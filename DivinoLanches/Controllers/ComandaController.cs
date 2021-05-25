@@ -178,20 +178,46 @@ namespace DivinoLanches.Controllers
         {
             try
             {
-                //TODO - DIEGO foreach para incluir todos os produtos da comanda na lista de vendas
                 ComandaRepo repo = new ComandaRepo();
 
-                List<ProdutoComandaModel> lista = repo.ObterProdutosComandaPorId(model.Id).Result;
+                List<ProdutoComandaModel> listaProdutosComanda = repo.ObterProdutosComandaPorId(model.Id).Result;
+                List<VendaModel> vendasProdutos = new List<VendaModel>();
 
-                model.ValorTotal = lista.Sum(x => x.Valor * x.Quantidade).ToString();
-
-                new ComandaRepo().FinalizarComanda(model);
-
-                return new RetornoModel()
+                foreach (ProdutoComandaModel item in listaProdutosComanda)
                 {
-                    Error = false,
-                    Mensagem = "Finalizado com sucesso!"
-                };
+                    vendasProdutos.Add(new VendaModel
+                    {
+                        NomeProduto = item.NomeProduto,
+                        TipoProduto = item.TipoProduto,
+                        SubTipoProduto = item.SubTipoProduto,
+                        FormaPagamento = model.FormaPagamento,
+                        Quantidade = item.Quantidade,
+                        ValorTotal = item.Quantidade * item.Valor
+                    });
+                }
+
+                bool result = new VendaRepo().IncluirTodos(vendasProdutos).Result;
+
+                if (result)
+                {
+                    model.ValorTotal = listaProdutosComanda.Sum(x => x.Valor * x.Quantidade).ToString();
+
+                    new ComandaRepo().FinalizarComanda(model);
+
+                    return new RetornoModel()
+                    {
+                        Error = false,
+                        Mensagem = "Finalizado com sucesso!"
+                    };
+                }
+                else
+                {
+                    return new RetornoModel()
+                    {
+                        Error = true,
+                        Mensagem = "Houve uma falha com o banco de dados. Tente novamente daquia alguns minutos!"
+                    };
+                }
             }
             catch (Exception ex)
             {
