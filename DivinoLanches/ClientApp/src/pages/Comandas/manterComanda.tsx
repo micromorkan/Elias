@@ -35,7 +35,6 @@ export interface StateProduto {
     openExclusao: boolean;
 
     update: string;
-    reload: boolean;
 }
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -105,6 +104,10 @@ const StyledToggleReload = withStyles({
     selected: {},
 })(ToggleButton);
 
+const { clearInterval, setInterval } = window;
+let reload = true;
+let interval = 0;
+
 class ManterComanda extends Component<PropsProduto, StateProduto> {
     constructor(props: PropsProduto) {    
         super(props);    
@@ -123,17 +126,21 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
             openExclusao: false,
 
             update: '1',
-            reload: true
         }
     }
 
     componentDidMount() {        
         this.carregarDados();
-        setInterval(this.reloadItensComanda, 10000);
+        interval = setInterval(this.reloadItensComanda, 10000);
+    }
+
+    componentWillUnmount() {
+        reload = false;
+        clearInterval(interval);
     }
 
     carregarDados = () => {
-        ComandaService.obterPorId(this.props.match.params.id).then((result: RetornoModel) => {                
+        ComandaService.obterPorId(this.props.match.params.id).then((result: RetornoModel) => {   
             if (!result.data.ativo) {
                 this.props.history.push("/TipoVenda/GerenciarComandas");
             }
@@ -142,14 +149,14 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
                 nomeCliente: result.data.nomeCliente,
                 listaProdutosComanda: result.data.listaProdutos,
                 valorTotal: result.data.listaProdutos.reduce((accum: number, item: any) => accum + (item.valor * item.quantidade), 0),
-                reload: true 
             });
+            reload = true;
         });
     }
 
     reloadItensComanda = () => {
-        if (this.state.update === '1' && this.state.reload) {
-            this.setState({ reload: false });
+        if (reload) {
+            reload = false;
             this.carregarDados();
         }
     }
@@ -209,6 +216,7 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
 
     handleUpdate = (event: React.MouseEvent<HTMLElement>, value: any) => {
         this.setState({ update: value === null ? '0' : value });
+        reload = value === null ? false : true;
     };
 
     openModal = () => {

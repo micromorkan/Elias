@@ -19,7 +19,6 @@ export interface StateComanda {
     nomeCliente: string;
     open: boolean;
     update: string;
-    reload: boolean;
 }
 
 const ButtonOrange = withStyles((theme) => ({
@@ -58,26 +57,35 @@ const StyledToggleButton = withStyles({
     selected: {},
 })(ToggleButton);
 
-class ListarComanda extends Component<PropsComanda, StateComanda> {
+const { clearInterval, setInterval } = window;
+let reload = true;
+let interval = 0;
+
+class ListarComanda extends Component<PropsComanda, StateComanda> {    
     constructor(props: PropsComanda) {    
-        super(props);    
+        super(props);          
         this.state = {
             listaTodosComanda: [],
             nomeCliente: '',
             open: false,
-            update: '1',
-            reload: true
+            update: '1',          
         }
-    }
+    }    
 
     componentDidMount() {
         this.carregarDados();
-        setInterval(this.reloadComanda, 10000);
+        interval = setInterval(this.reloadComanda, 10000);
+    }
+
+    componentWillUnmount() {
+        reload = false;
+        clearInterval(interval);
     }
 
     carregarDados = () => {
         ComandaService.obterFiltrado(new ComandaModel({ ativo: true })).then((result: RetornoModel) => {
-            this.setState({ listaTodosComanda: result.data, reload: true });
+            this.setState({ listaTodosComanda: result.data });
+            reload = true;
         });
     }
 
@@ -114,11 +122,12 @@ class ListarComanda extends Component<PropsComanda, StateComanda> {
 
     handleUpdate = (event: React.MouseEvent<HTMLElement>, value: any) => {
         this.setState({ update: value === null ? '0' : value });
+        reload = value === null ? false : true;
     };
 
     reloadComanda = () => {
-        if (this.state.update === '1' && this.state.reload) {
-            this.setState({ reload: false });
+        if (reload) {
+            reload = false;
             this.carregarDados();
         }
     }
