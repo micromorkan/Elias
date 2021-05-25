@@ -97,7 +97,7 @@ class TipoProduto extends Component<PropsTipoProduto, StateTipoProduto> {
             <div>
                 <Box textAlign='center'>
                     <h1 style={{fontSize: '30px'}}>Tipo Produto</h1>
-                    <Button onClick={history.goBack} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
+                    <Button onClick={() => history.push('/Configuracoes/GerenciarTipoProduto')} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
                     <br />
                     <br />
                     <span style={{fontSize: '20px'}}>Informe os itens abaixo</span>

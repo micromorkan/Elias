@@ -131,7 +131,7 @@ class ListarProduto extends Component<PropsProduto, StateProduto> {
             <div>
                 <Box textAlign='center'>
                     <h1 style={{fontSize: '30px'}}>Produtos</h1>
-                    <Button onClick={history.goBack} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
+                    <Button onClick={() => history.push('/Configuracoes')} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
                     <Button onClick={()=> history.push({pathname: "/Configuracoes/ManterProduto"})} style={{marginTop: '10px', marginLeft: '20px'}} variant="contained" color='primary'>Incluir Novo</Button>
                 </Box>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>

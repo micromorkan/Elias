@@ -55,7 +55,7 @@ export interface StateConfiguracoes {
             <div>
                 <Box textAlign='center'>
                     <h1 style={{fontSize: '50px'}}>Configurações</h1>
-                    <Button onClick={history.goBack} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
+                    <Button onClick={() => history.push('/')} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
                     <br />
                     <ButtonGreen onClick={()=> history.push("/Configuracoes/GerenciarProdutos")} size="large" variant="contained" color="primary" style={{marginTop: '60px'}}>
                         Gerenciar Produtos

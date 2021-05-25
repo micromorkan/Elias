@@ -120,7 +120,7 @@ class SubTipoProduto extends Component<PropsSubTipoProduto, StateSubTipoProduto>
             <div>
                 <Box textAlign='center'>
                     <h1 style={{fontSize: '30px'}}>Sub Tipo Produto</h1>
-                    <Button onClick={history.goBack} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
+                    <Button onClick={() => history.push('/Configuracoes/GerenciarSubTipoProduto')} style={{marginTop: '10px'}} variant="outlined" color='default'>Voltar</Button>
                     <br />
                     <br />
                     <span style={{fontSize: '20px'}}>Informe os itens abaixo</span>
