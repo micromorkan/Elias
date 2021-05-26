@@ -174,6 +174,7 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
         } else {
             ComandaService.excluirProdutoComanda(this.state.idProdutoComanda, this.state.qtdEmUso, this.state.qtdRemover).then((result: RetornoModel) => {
                 if (!result.error) {
+                    this.setState({ qtdRemover: 0 });
                     this.closeModalExclusao();
                     this.carregarDados();
                 }
