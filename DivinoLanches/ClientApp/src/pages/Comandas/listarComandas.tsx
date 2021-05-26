@@ -12,13 +12,14 @@ import CachedIcon from '@material-ui/icons/Cached';
 
 export interface PropsComanda {
     children: React.ReactNode;
-    history?: any;
+    history?: any;   
 }
 export interface StateComanda {
     listaTodosComanda: ComandaModel[];
     nomeCliente: string;
     open: boolean;
     update: string;
+    habilitarIncluirComanda: boolean;
 }
 
 const ButtonOrange = withStyles((theme) => ({
@@ -69,6 +70,7 @@ class ListarComanda extends Component<PropsComanda, StateComanda> {
             nomeCliente: '',
             open: false,
             update: '1',          
+            habilitarIncluirComanda: true,
         }
     }    
 
@@ -97,20 +99,22 @@ class ListarComanda extends Component<PropsComanda, StateComanda> {
         if (this.state.nomeCliente === '') {
             alert('Informe o Nome do Cliente');
         } else {
+            this.setState({ habilitarIncluirComanda: false }, () => {
+                let venda = {
+                    nomeCliente: this.state.nomeCliente
+                }
 
-            let venda = {
-                nomeCliente: this.state.nomeCliente
-            }
-            
-            let model = new ComandaModel(venda);
-            
-            ComandaService.incluir(model).then((result: RetornoModel) => {
-                this.closeModal();
-                console.log(result)
-                this.props.history.push({ pathname: "/TipoVenda/ManterComanda/" + result.data });
-            }).catch(error => {
-                alert('Ocorreu um erro ao salvar: ' + error);
-            });
+                let model = new ComandaModel(venda);
+
+                ComandaService.incluir(model).then((result: RetornoModel) => {
+                    this.closeModal();                    
+                    this.props.history.push({ pathname: "/TipoVenda/ManterComanda/" + result.data });
+                }).catch(error => {
+                    alert('Ocorreu um erro ao salvar: ' + error);
+                    this.setState({ habilitarIncluirComanda: true });
+                });
+            })
+           
         }
     };
 
@@ -187,7 +191,7 @@ class ListarComanda extends Component<PropsComanda, StateComanda> {
                                 </Grid>
                             </Grid>
                             <br /><br />
-                            <Button variant="contained" color='primary' onClick={() => this.incluirComanda()}>Salvar</Button>
+                            <Button disabled={!this.state.habilitarIncluirComanda} variant="contained" color='primary' onClick={() => this.incluirComanda()}>Salvar</Button>
                         </div>
                     </Fade>
                 </Modal>

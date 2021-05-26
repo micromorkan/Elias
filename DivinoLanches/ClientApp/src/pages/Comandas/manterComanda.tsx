@@ -34,6 +34,8 @@ export interface StateProduto {
     open: boolean;
     openExclusao: boolean;
 
+    habilitarAcoes: boolean;
+
     update: string;
 }
 
@@ -125,6 +127,8 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
             open: false,
             openExclusao: false,
 
+            habilitarAcoes: false,
+
             update: '1',
         }
     }
@@ -149,6 +153,7 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
                 nomeCliente: result.data.nomeCliente,
                 listaProdutosComanda: result.data.listaProdutos,
                 valorTotal: result.data.listaProdutos.reduce((accum: number, item: any) => accum + (item.valor * item.quantidade), 0),
+                habilitarAcoes: true,
             });
             reload = true;
         });
@@ -269,7 +274,7 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
                             <CachedIcon />
                         </StyledToggleReload>
                     </ToggleButtonGroup>
-                    <Button style={{ marginTop: '-10px', marginLeft: '10px' }} onClick={() => history.push({ pathname: "/TipoVenda/TipoVendaComanda", state: { idComanda: this.state.id, nomeCliente: this.state.nomeCliente  } })} variant="contained" color='primary'>Incluir</Button>
+                    <Button disabled={!this.state.habilitarAcoes} style={{ marginTop: '-10px', marginLeft: '10px' }} onClick={() => history.push({ pathname: "/TipoVenda/TipoVendaComanda", state: { idComanda: this.state.id, nomeCliente: this.state.nomeCliente } })} variant="contained" color='primary'>Incluir</Button>
                     <br />
                 </Box>
                 <TableContainer component={Paper} style={{ marginTop: '20px' }}>
@@ -312,12 +317,12 @@ class ManterComanda extends Component<PropsProduto, StateProduto> {
                 </TableContainer>
                 {rows.length > 0 && (
                     <Box textAlign='center'>
-                        <Button onClick={() => this.openModal()} style={{ marginTop: '20px' }} variant="contained" color='primary'>Finalizar Comanda</Button>
+                        <Button disabled={!this.state.habilitarAcoes} onClick={() => this.openModal()} style={{ marginTop: '20px' }} variant="contained" color='primary'>Finalizar Comanda</Button>
                     </Box>
                 )}
                 {rows.length === 0 && (
                     <Box textAlign='center'>
-                        <Button onClick={() => this.cancelarComanda()} style={{ marginTop: '20px' }} variant="contained" color='primary'>Cancelar Comanda</Button>
+                        <Button disabled={!this.state.habilitarAcoes} onClick={() => this.cancelarComanda()} style={{ marginTop: '20px' }} variant="contained" color='primary'>Cancelar Comanda</Button>
                     </Box>
                 )}
                 

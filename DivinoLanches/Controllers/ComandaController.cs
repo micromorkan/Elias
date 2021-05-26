@@ -93,8 +93,16 @@ namespace DivinoLanches.Controllers
         {
             try
             {                
-
                 model.Ativo = true;
+                
+                if (new ComandaRepo().ObterFiltrado(model).Result.Count() > 0)
+                {
+                    return new RetornoModel()
+                    {
+                        Error = true,
+                        Mensagem = "Já existe uma comanda com o nome informado"
+                    };
+                }
 
                 return new RetornoModel()
                 {
