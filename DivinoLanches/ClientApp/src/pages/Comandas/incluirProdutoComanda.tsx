@@ -20,7 +20,7 @@ class IncluirProdutoComanda extends Component<PropsProdutoComanda, StateProdutoC
         if (!!this.props.location.state.idComanda) {
             this.props.history.push('/TipoVenda/GerenciarComandas');
         }
-
+        
         let produtoComandaModel = new ProdutoComandaModel({
             idComanda: this.props.location.state.idComanda,
             quantidade: model.quantidade,
@@ -31,11 +31,11 @@ class IncluirProdutoComanda extends Component<PropsProdutoComanda, StateProdutoC
         });
 
         ComandaService.incluirProdutoComanda(produtoComandaModel).then(() => {
-            this.props.history.push('/TipoVenda/ManterComanda/' + this.props.location.state.idComanda)
+            this.props.history.push('/TipoVenda/ManterComanda/' + this.props.location.state.idComanda);
             //alert("Produto incluido com sucesso!")            
         }).catch(error => {
-            alert('Ocorreu um erro ao salvar: ' + error);
-        });
+            alert('Ocorreu um erro ao salvar: ' + error);       
+        });       
     }
 
     render() {

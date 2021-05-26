@@ -19,6 +19,7 @@ export interface StateSubTipoProduto {
     ativo: boolean;
 
     listaTipoProduto: any[];
+    habilitarIncluir: boolean;
 }
 
 class SubTipoProduto extends Component<PropsSubTipoProduto, StateSubTipoProduto> {
@@ -29,7 +30,8 @@ class SubTipoProduto extends Component<PropsSubTipoProduto, StateSubTipoProduto>
             nome: '',
             tipo: '',
             ativo: true,
-            listaTipoProduto: []
+            listaTipoProduto: [],
+            habilitarIncluir: true
         }
     }
 
@@ -77,22 +79,28 @@ class SubTipoProduto extends Component<PropsSubTipoProduto, StateSubTipoProduto>
 
             let model = new SubTipoProdutoModel(object);
 
-            if (!!this.props.match.params.id) {
-                SubTipoProdutoService.alterar(model).then((result: RetornoModel) => {
-                    alert(result.mensagem)
-                }).catch((result: RetornoModel) => {
-                    alert(result.mensagem)
-                });
-            } else {
-                SubTipoProdutoService.incluir(model).then((result: RetornoModel) => {
-                    if (!result.error) {
-                        this.limparCampos();
-                    }
-                    alert(result.mensagem)
-                }).catch((result: RetornoModel) => {
-                    alert(result.mensagem)
-                });
-            }
+            this.setState({ habilitarIncluir: false }, () => {
+                if (!!this.props.match.params.id) {
+                    SubTipoProdutoService.alterar(model).then((result: RetornoModel) => {
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    }).catch((result: RetornoModel) => {
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    });
+                } else {
+                    SubTipoProdutoService.incluir(model).then((result: RetornoModel) => {
+                        if (!result.error) {
+                            this.limparCampos();
+                        }
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    }).catch((result: RetornoModel) => {
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    });
+                }
+            });
         }
     }
 
@@ -146,7 +154,7 @@ class SubTipoProduto extends Component<PropsSubTipoProduto, StateSubTipoProduto>
                     </Grid>
                 </form>
                 <Box textAlign='center'>
-                    <Button onClick={() => this.handleSubmit()} style={{marginTop: '20px'}} variant="contained" color='primary'>Salvar</Button>
+                    <Button disabled={!this.state.habilitarIncluir} onClick={() => this.handleSubmit()} style={{marginTop: '20px'}} variant="contained" color='primary'>Salvar</Button>
                 </Box>
             </div>
         );

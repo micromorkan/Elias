@@ -34,6 +34,7 @@ export interface StateListagemProduto {
     quantidade: number;
     formaPagamento: string;
 
+    habilitarIncluir: boolean;
     open: boolean;
 }
 
@@ -87,6 +88,7 @@ class ListagemProduto extends Component<PropsListagemProduto, StateListagemProdu
             quantidade: 0,
             formaPagamento: '',
 
+            habilitarIncluir: true,
             open: false
         }
     }
@@ -118,12 +120,12 @@ class ListagemProduto extends Component<PropsListagemProduto, StateListagemProdu
             nomeProduto: nomeproduto,
             tipoProduto: tipo,
             subTipoProduto: subTipo,
-            valorUnitario: valor
+            valorUnitario: valor,            
         });
     };
 
     closeModal = () => {
-        this.setState({ open: false, nomeProduto: '', quantidade: 1, formaPagamento: '' });
+        this.setState({ open: false, nomeProduto: '', quantidade: 1, formaPagamento: '', habilitarIncluir: true });
     };
 
     handleQuantidade = (value: any) => {
@@ -149,11 +151,12 @@ class ListagemProduto extends Component<PropsListagemProduto, StateListagemProdu
             }
 
             let model = new VendaModel(venda);
-
-            this.props.handle(model);
-            this.closeModal();
+            this.setState({ habilitarIncluir: false }, () => {
+                this.props.handle(model);
+                this.closeModal();
+            });
         }
-    };
+    };   
 
     render() {
         let produtos = this.state.listaProdutos;
@@ -234,7 +237,7 @@ class ListagemProduto extends Component<PropsListagemProduto, StateListagemProdu
                             </div>
                             )}
                             <br /><br />
-                            <Button variant="contained" color='primary' onClick={this.incluirVenda}>Salvar</Button>
+                            <Button disabled={!this.state.habilitarIncluir} variant="contained" color='primary' onClick={this.incluirVenda}>Salvar</Button>
                         </div>
                     </Fade>
                 </Modal>

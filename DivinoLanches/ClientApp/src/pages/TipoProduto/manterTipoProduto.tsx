@@ -14,6 +14,7 @@ export interface StateTipoProduto {
     id: number;
     nome: string;
     ativo: boolean;
+    habilitarIncluir: boolean;
 }
 
 class TipoProduto extends Component<PropsTipoProduto, StateTipoProduto> {
@@ -22,7 +23,8 @@ class TipoProduto extends Component<PropsTipoProduto, StateTipoProduto> {
         this.state = {
             id: 0,
             nome: '',
-            ativo: true
+            ativo: true,
+            habilitarIncluir: true,
         }
     }
 
@@ -58,24 +60,29 @@ class TipoProduto extends Component<PropsTipoProduto, StateTipoProduto> {
             }
 
             let model = new TipoProdutoModel(object);
-            
-            if (!!this.props.match.params.id) {
-                TipoProdutoService.alterar(model).then((result: RetornoModel) => {
-                    alert(result.mensagem)
 
-                }).catch((result: RetornoModel) => {
-                    alert(result.mensagem)
-                });
-            } else {
-                TipoProdutoService.incluir(model).then((result: RetornoModel) => {
-                    if (!result.error) {
-                        this.limparCampos();
-                    }
-                    alert(result.mensagem)
-                }).catch((result: RetornoModel) => {
-                    alert(result.mensagem)
-                });
-            }
+            this.setState({ habilitarIncluir: false }, () => {
+                if (!!this.props.match.params.id) {
+                    TipoProdutoService.alterar(model).then((result: RetornoModel) => {
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    }).catch((result: RetornoModel) => {
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    });
+                } else {
+                    TipoProdutoService.incluir(model).then((result: RetornoModel) => {
+                        if (!result.error) {
+                            this.limparCampos();
+                        }
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    }).catch((result: RetornoModel) => {
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    });
+                }
+            });
         }
     }
 
@@ -116,7 +123,7 @@ class TipoProduto extends Component<PropsTipoProduto, StateTipoProduto> {
                     </Grid>
                 </form>
                 <Box textAlign='center'>
-                    <Button onClick={() => this.handleSubmit()} style={{marginTop: '20px'}} variant="contained" color='primary'>Salvar</Button>
+                    <Button disabled={!this.state.habilitarIncluir} onClick={() => this.handleSubmit()} style={{marginTop: '20px'}} variant="contained" color='primary'>Salvar</Button>
                 </Box>
             </div>
         );

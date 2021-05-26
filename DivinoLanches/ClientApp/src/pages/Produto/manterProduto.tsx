@@ -26,6 +26,7 @@ export interface StateProduto {
     listaSubTipoProduto: SubTipoProdutoModel[];
 
     habilitarCombo: boolean;
+    habilitarIncluir: boolean;
 }
 
 class Produto extends Component<PropsProduto, StateProduto> {
@@ -40,7 +41,8 @@ class Produto extends Component<PropsProduto, StateProduto> {
             ativo: true,
             listaTipoProduto: [],
             listaSubTipoProduto: [],
-            habilitarCombo: false
+            habilitarCombo: false,
+            habilitarIncluir: true
         }
     }
 
@@ -95,33 +97,39 @@ class Produto extends Component<PropsProduto, StateProduto> {
             alert('Informe o Valor do Produto')
         } else {
 
-        let object = {
-            id: this.state.id,
-            nome: this.state.nome,
-            tipo: this.state.tipo,
-            subTipo: this.state.subtipo,
-            valor: this.state.valor,
-            ativo: this.state.ativo
-        }
-
-        let model = new ProdutoModel(object);
-        
-        if (!!this.props.match.params.id) {
-            ProdutoService.alterar(model).then((result: any) => {
-                alert(result.mensagem)
-            }).catch((result: RetornoModel) => {
-                alert(result.mensagem)
-            });
-        } else {        
-            ProdutoService.incluir(model).then((result: any) => {
-                if (!result.error) {
-                    this.limparCampos();
-                }
-                alert(result.mensagem)
-            }).catch((result: RetornoModel) => {
-                alert(result.mensagem)
-            });
+            let object = {
+                id: this.state.id,
+                nome: this.state.nome,
+                tipo: this.state.tipo,
+                subTipo: this.state.subtipo,
+                valor: this.state.valor,
+                ativo: this.state.ativo
             }
+
+            let model = new ProdutoModel(object);
+
+            this.setState({ habilitarIncluir: false }, () => {
+                if (!!this.props.match.params.id) {
+                    ProdutoService.alterar(model).then((result: any) => {
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    }).catch((result: RetornoModel) => {
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    });
+                } else {
+                    ProdutoService.incluir(model).then((result: any) => {
+                        if (!result.error) {
+                            this.limparCampos();
+                        }
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    }).catch((result: RetornoModel) => {
+                        this.setState({ habilitarIncluir: true });
+                        alert(result.mensagem);
+                    });
+                }
+            });
         }
     }
 
@@ -192,7 +200,7 @@ class Produto extends Component<PropsProduto, StateProduto> {
                     </Grid>
                 </form>
                 <Box textAlign='center'>
-                    <Button onClick={() => this.handleSubmit()} style={{marginTop: '20px'}} variant="contained" color='primary'>Salvar</Button>
+                    <Button disabled={!this.state.habilitarIncluir} onClick={() => this.handleSubmit()} style={{marginTop: '20px'}} variant="contained" color='primary'>Salvar</Button>
                 </Box>
             </div>
         );
